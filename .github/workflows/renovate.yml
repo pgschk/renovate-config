@@ -1,0 +1,56 @@
+# Runs Renovate for the repositories in config.js, as the GitHub App.
+# Renovate's own schedule (default.json, Europe/Berlin) decides what happens:
+# new branches and automerges only on Friday 01:00-07:59 Berlin time. These
+# runs only have to cover that window in winter (UTC+1) and summer (UTC+2):
+# Thursday 23:00 UTC is 01:00 in summer and does nothing in winter, and the
+# last run starts by 06:00 UTC.
+name: renovate
+
+on:
+  schedule:
+    - cron: "0 23 * * 4"
+    - cron: "0 0-6 * * 5"
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: Renovate log level
+        type: choice
+        options: [info, debug]
+        default: info
+
+permissions:
+  contents: read
+
+concurrency:
+  group: renovate
+  cancel-in-progress: false
+
+jobs:
+  renovate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      # renovate: datasource=docker depName=ghcr.io/renovatebot/renovate
+      RENOVATEBOT_VERSION: 44.239.1
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # A short-lived installation token, limited to the repos Renovate handles
+      - uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        id: app-token
+        with:
+          client-id: ${{ vars.RENOVATE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RENOVATE_APP_PRIVATE_KEY }}
+          owner: ${{ github.repository_owner }}
+          repositories: renovate-config,k3s-gitops
+
+      - uses: renovatebot/github-action@266fef21329c44765ad42f9dea1f01f5d2d91084 # v46.3.13
+        with:
+          token: ${{ steps.app-token.outputs.token }}
+          configurationFile: config.js
+          renovate-version: ${{ env.RENOVATEBOT_VERSION }}
+        env:
+          LOG_LEVEL: ${{ inputs.logLevel || 'info' }}
+          # Private images on ghcr.io: a classic PAT with read:packages only.
+          # GitHub App tokens can't read GHCR.
+          RENOVATE_HOST_RULES: ${{ format('[{{"matchHost":"ghcr.io","hostType":"docker","username":"pgschk","password":"{0}"}}]', secrets.RENOVATE_GHCR_TOKEN) }}

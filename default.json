@@ -1,0 +1,19 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "Shared rules for pgschk's repos; a repo uses them with \"extends\": [\"github>pgschk\"]",
+  "extends": [
+    "config:recommended",
+    "docker:pinDigests",
+    "helpers:pinGitHubActionDigests",
+    "customManagers:githubActionsVersions"
+  ],
+  "timezone": "Europe/Berlin",
+  "schedule": ["* 1-7 * * 5"],
+  "automergeSchedule": ["* 1-7 * * 5"],
+  "minimumReleaseAge": "3 days",
+  "minimumReleaseAgeBehaviour": "timestamp-optional",
+  "prHourlyLimit": 0,
+  "prConcurrentLimit": 10,
+  "automergeType": "branch",
+  "platformAutomerge": false
+}

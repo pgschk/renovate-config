@@ -1,0 +1,38 @@
+# Checks the configs with Renovate's own validator, in the same Renovate
+# version the renovate workflow runs.
+name: validate
+
+on:
+  pull_request:
+  push:
+    branches: [main, "renovate/**"]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      # renovate: datasource=docker depName=ghcr.io/renovatebot/renovate
+      RENOVATEBOT_VERSION: 44.239.1
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # Files named on the command line count as global config unless
+      # --no-global; these two are a preset and a repo config.
+      - name: Validate repository configs
+        run: |
+          docker run --rm -v "$PWD:/repo:ro" -w /repo \
+            "ghcr.io/renovatebot/renovate:${RENOVATEBOT_VERSION}" \
+            renovate-config-validator --strict --no-global default.json renovate.json
+
+      # Without arguments, the validator checks RENOVATE_CONFIG_FILE as global
+      # config (and renovate.json again, as a repo config).
+      - name: Validate global config
+        run: |
+          docker run --rm -v "$PWD:/repo:ro" -w /repo \
+            -e RENOVATE_CONFIG_FILE=/repo/config.js \
+            "ghcr.io/renovatebot/renovate:${RENOVATEBOT_VERSION}" \
+            renovate-config-validator --strict
