@@ -1,5 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "description": "Keeps this repo's Actions and the Renovate version in the workflow current",
-  "extends": ["github>pgschk/renovate-config"]
+  "description": "Keeps this repo's Actions and the Renovate version in the workflows current",
+  "extends": ["github>pgschk/renovate-config"],
+  "packageRules": [
+    {
+      "description": "Renovate's own image: plain version tags, no digest (renovate-version and the validator's image tag)",
+      "matchPackageNames": ["ghcr.io/renovatebot/renovate"],
+      "pinDigests": false
+    }
+  ]
 }
