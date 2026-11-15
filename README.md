@@ -14,7 +14,7 @@ repositories, and the rules they share.
 A repository uses the shared rules with:
 
 ```json
-{ "extends": ["github>pgschk"] }
+{ "extends": ["github>pgschk/renovate-config"] }
 ```
 
 Its own `renovate.json` decides what may merge itself. Renovate only
@@ -36,5 +36,6 @@ automerges when the repository's CI passes on the `renovate/**` branch.
 1. Install the App on it.
 2. Add it to `repositories` in `config.js` and to `repositories` of the
    App token step in `.github/workflows/renovate.yml`.
-3. Commit a `renovate.json` there that extends `github>pgschk`; make its
+3. Commit a `renovate.json` there that extends
+   `github>pgschk/renovate-config` (there's no shorter form), and make its
    CI run on pushes to `renovate/**` if anything should automerge.

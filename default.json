@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "description": "Shared rules for pgschk's repos; a repo uses them with \"extends\": [\"github>pgschk\"]",
+  "description": "Shared rules for pgschk's repos; a repo uses them with \"extends\": [\"github>pgschk/renovate-config\"]",
   "extends": [
     "config:recommended",
     "docker:pinDigests",
