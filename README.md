@@ -38,8 +38,14 @@ and the App's "Dependabot alerts: read" permission.
 ## Setup
 
 - GitHub App, installed on this repo and every repo Renovate should handle, with
-  repository permissions: Contents, Pull requests, Issues and Workflows
-  read and write; Checks and Commit statuses read.
+  repository permissions:
+  - Contents, Pull requests, Issues, Workflows and Commit statuses: read
+    and write. Renovate sets its own statuses (e.g. `renovate/stability-days`)
+    on its branches and stops a repo with a 403 without them.
+  - Checks: read.
+  - Dependabot alerts: read, for security updates from vulnerability alerts.
+
+  After changing the App's permissions, accept them on its installation.
 - Variable `RENOVATE_APP_CLIENT_ID`: the App's client ID.
 - Secret `RENOVATE_APP_PRIVATE_KEY`: a private key of the App.
 - Secret `RENOVATE_GHCR_TOKEN`: a classic personal access token with only
