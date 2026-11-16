@@ -1,4 +1,4 @@
-# Runs Renovate for the repositories in config.js, as the GitHub App.
+# Runs Renovate, as the GitHub App, for every repo the App is installed on.
 # Each repo's schedule decides what happens in a run:
 # - default.json (infra): new branches and automerges only on Friday
 #   01:00-07:59 Berlin time. The Friday runs cover that window in winter
@@ -35,14 +35,13 @@ jobs:
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-      # A short-lived installation token, limited to the repos Renovate handles
+      # A short-lived installation token for every repo the App is installed on
       - uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         id: app-token
         with:
           client-id: ${{ vars.RENOVATE_APP_CLIENT_ID }}
           private-key: ${{ secrets.RENOVATE_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
-          repositories: renovate-config,k3s-gitops,foundryvtt-containerized
 
       - uses: renovatebot/github-action@266fef21329c44765ad42f9dea1f01f5d2d91084 # v46.3.13
         with:

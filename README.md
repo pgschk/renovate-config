@@ -6,7 +6,7 @@ repositories, and the rules they share.
 | File | What |
 |---|---|
 | `.github/workflows/renovate.yml` | Runs Renovate as the GitHub App: hourly in the Friday window, twice daily (04:00 and 16:00 UTC), or by hand (Actions → renovate → Run workflow) |
-| `config.js` | Global config: which repositories, commits through the App |
+| `config.js` | Global config: autodiscovers the App's repos, commits through the App |
 | `default.json` | Shared rules: Friday 01:00–07:59 Berlin schedule, 3-day release age, PR limits, digest pinning, branch automerge |
 | `fast.json` | For software repos: updates at any time, PR automerge, base image digests without release age |
 | `renovate.json` | This repo's own config (keeps the Actions and the Renovate version current) |
@@ -37,7 +37,7 @@ and the App's "Dependabot alerts: read" permission.
 
 ## Setup
 
-- GitHub App, installed on this repo and every repo in `config.js`, with
+- GitHub App, installed on this repo and every repo Renovate should handle, with
   repository permissions: Contents, Pull requests, Issues and Workflows
   read and write; Checks and Commit statuses read.
 - Variable `RENOVATE_APP_CLIENT_ID`: the App's client ID.
@@ -48,9 +48,8 @@ and the App's "Dependabot alerts: read" permission.
 
 ## Adding a repository
 
-1. Install the App on it.
-2. Add it to `repositories` in `config.js` and to `repositories` of the
-   App token step in `.github/workflows/renovate.yml`.
-3. Commit a `renovate.json` there that extends
+1. Install the App on it. Renovate works on every repo the App is installed
+   on, but skips one without a `renovate.json`.
+2. Commit a `renovate.json` there that extends
    `github>pgschk/renovate-config` (there's no shorter form), and make its
    CI run on pushes to `renovate/**` if anything should automerge.
