@@ -3,10 +3,8 @@
 // extends are in default.json; each repo's own rules in its renovate.json.
 module.exports = {
   platform: 'github',
-  // Add a repo here, give it a renovate.json that extends
-  // "github>pgschk/renovate-config", and add it to the App token's
-  // repositories in the workflow.
-  repositories: ['pgschk/renovate-config', 'pgschk/k3s-gitops'],
+  // Every repo the App is installed on; installing the App decides which.
+  autodiscover: true,
   // Repos get their renovate.json by hand, so no onboarding PRs, and a repo
   // without one is left alone.
   onboarding: false,
