@@ -26,7 +26,7 @@ jobs:
         run: |
           docker run --rm -v "$PWD:/repo:ro" -w /repo \
             "ghcr.io/renovatebot/renovate:${RENOVATEBOT_VERSION}" \
-            renovate-config-validator --strict --no-global default.json renovate.json
+            renovate-config-validator --strict --no-global default.json fast.json renovate.json
 
       # Without arguments, the validator checks RENOVATE_CONFIG_FILE as global
       # config (and renovate.json again, as a repo config).

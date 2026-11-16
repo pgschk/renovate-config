@@ -6,7 +6,11 @@ module.exports = {
   // Add a repo here, give it a renovate.json that extends
   // "github>pgschk/renovate-config", and add it to the App token's
   // repositories in the workflow.
-  repositories: ['pgschk/renovate-config', 'pgschk/k3s-gitops'],
+  repositories: [
+    'pgschk/renovate-config',
+    'pgschk/k3s-gitops',
+    'pgschk/foundryvtt-containerized',
+  ],
   // Repos get their renovate.json by hand, so no onboarding PRs, and a repo
   // without one is left alone.
   onboarding: false,

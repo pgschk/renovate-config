@@ -1,15 +1,18 @@
 # Runs Renovate for the repositories in config.js, as the GitHub App.
-# Renovate's own schedule (default.json, Europe/Berlin) decides what happens:
-# new branches and automerges only on Friday 01:00-07:59 Berlin time. These
-# runs only have to cover that window in winter (UTC+1) and summer (UTC+2):
-# Thursday 23:00 UTC is 01:00 in summer and does nothing in winter, and the
-# last run starts by 06:00 UTC.
+# Each repo's schedule decides what happens in a run:
+# - default.json (infra): new branches and automerges only on Friday
+#   01:00-07:59 Berlin time. The Friday runs cover that window in winter
+#   (UTC+1) and summer (UTC+2): Thursday 23:00 UTC is 01:00 in summer and
+#   does nothing in winter, and the last run starts by 06:00 UTC.
+# - fast.json (software): at any time, so the twice-daily runs pick up
+#   updates and merge them once CI has passed, usually the same day.
 name: renovate
 
 on:
   schedule:
     - cron: "0 23 * * 4"
     - cron: "0 0-6 * * 5"
+    - cron: "0 4,16 * * *"
   workflow_dispatch:
     inputs:
       logLevel:
@@ -39,7 +42,7 @@ jobs:
           client-id: ${{ vars.RENOVATE_APP_CLIENT_ID }}
           private-key: ${{ secrets.RENOVATE_APP_PRIVATE_KEY }}
           owner: ${{ github.repository_owner }}
-          repositories: renovate-config,k3s-gitops
+          repositories: renovate-config,k3s-gitops,foundryvtt-containerized
 
       - uses: renovatebot/github-action@266fef21329c44765ad42f9dea1f01f5d2d91084 # v46.3.13
         with:

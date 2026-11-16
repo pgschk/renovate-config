@@ -1,0 +1,15 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "description": "For software repos that ship to users: updates at any time instead of Fridays; extend it after the shared rules: [\"github>pgschk/renovate-config\", \"github>pgschk/renovate-config:fast\"]",
+  "schedule": ["at any time"],
+  "automergeSchedule": ["at any time"],
+  "automergeType": "pr",
+  "packageRules": [
+    {
+      "description": "Base image digests carry security fixes and a re-pushed tag can keep restarting the release age, so take them right away",
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["digest"],
+      "minimumReleaseAge": null
+    }
+  ]
+}
