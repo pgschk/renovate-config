@@ -56,7 +56,7 @@ jobs:
           configurationFile: config.js
           # Renovate updates this input itself; keep it a plain version, the
           # same as RENOVATEBOT_VERSION in validate.yml
-          renovate-version: 44.239.1
+          renovate-version: 44.256.0
         env:
           LOG_LEVEL: ${{ inputs.logLevel || 'info' }}
           # Private images on ghcr.io: a classic PAT with read:packages only.
