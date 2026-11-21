@@ -8,7 +8,7 @@ public so that repos of every account can extend its presets.
 |---|---|
 | `.github/workflows/renovate.yml` | Runs Renovate as the GitHub App, one job per account: hourly in the Friday window, twice daily (04:00 and 16:00 UTC), or by hand (Actions → renovate → Run workflow) |
 | `config.js` | Global config: autodiscovers the App's repos, opens onboarding PRs, commits through the App |
-| `default.json` | Shared rules: Friday 01:00–07:59 Berlin schedule, 3-day release age, PR limits, digest pinning, branch automerge |
+| `default.json` | Shared rules: Friday 01:00–07:59 Berlin schedule, 3-day release age, PR limits, digest pinning, branch automerge, PRs assigned to pgschk |
 | `fast.json` | For software repos: updates at any time, PR automerge, base image digests without release age |
 | `renovate.json` | This repo's own config (keeps the Actions and the Renovate version current) |
 | `.github/workflows/validate.yml` | Checks the configs with `renovate-config-validator` |
